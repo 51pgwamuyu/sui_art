@@ -1,1 +1,1 @@
-Article writing smart contarct for dacade submission
+Article writing smart contract for dacade submission
