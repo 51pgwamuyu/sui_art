@@ -100,7 +100,7 @@ public entry fun register_blogSite(name:String,ctx:&mut TxContext){
 
 
     //function to create an article
-public entry fun createarticle(user:&mut BlogSite,nameofarticle:String,title:String,description:String){
+public entry fun create_an_article(user:&mut BlogSite,nameofarticle:String,title:String,description:String){
         
         let article_count=user.articles.length();
 
@@ -177,7 +177,7 @@ public entry fun buy_me_coffee(article_id:u64,amount:Coin<SUI>,blog:&mut BlogSit
 
 //owner delete the article
 #[allow(unused_function)]
-public entry fun delete_article( owner_cap: &BlogOwner,blog:&mut BlogSite,articleid:u64){
+public entry fun delete_an_article( owner_cap: &BlogOwner,blog:&mut BlogSite,articleid:u64){
 
     //make sure its the owner deleting the article
     //assert!(object::id(verifyowner)==object::id(article),EOnlyOwnerCanDeleteArticle);
@@ -209,27 +209,27 @@ assert!(article_id <= blog.articles.length(),  EArticleNotAvailable);
  }
 
  //function to get all written articles
- public fun get_all_articles(blog:&BlogSite):&vector<Article>{
+ public entry fun get_all_articles(blog:&BlogSite):&vector<Article>{
     //return list of all articles
     let allarticles=&blog.articles;
     allarticles
  }
 //function to add like an article
-public entry fun addliketoanarticle(blog:&mut BlogSite,by:address,article_id:u64){
+public entry fun add_like_to_an_article(blog:&mut BlogSite,by:address,article_id:u64){
     assert!(article_id <= blog.articles.length(),  EArticleNotAvailable);
      blog.articles[article_id].likes.push_back(by);
      
  }
 
 //function to add dislike on an article
-public entry fun adddilikestoanarticle(blog:&mut BlogSite,by:address,article_id:u64){
+public entry fun add_dilikes_to_an_article(blog:&mut BlogSite,by:address,article_id:u64){
      assert!(article_id <= blog.articles.length(),  EArticleNotAvailable);
      blog.articles[article_id].dislikes.push_back(by);
      
  }
 
  //function to add comment to an article
- public entry fun addcommenttoanarticle(blog:&mut BlogSite,comment:String,article_id:u64){
+ public entry fun add_comment_to_an_article(blog:&mut BlogSite,comment:String,article_id:u64){
     assert!(article_id <= blog.articles.length(),  EArticleNotAvailable);
      blog.articles[article_id].comments.push_back(comment);
      

@@ -4,11 +4,8 @@ use std::string::{String};
 use sui::coin::{Coin, Self,take};
 use sui::balance::{Balance, Self, zero};
 use sui::sui::SUI;
-//
-//use sui::object::{Self, UID};
-//use sui::clock::Clock;
+
 use sui::event;
-//use std::vec::Vec;
 
 //define errors
 const EAmountMustBeGreaterThanOne:u64=1;
@@ -17,7 +14,7 @@ const ENotOwner:u64=3;
 const EArticleNotAvailable:u64=5;
 const Error_Invalid_WithdrawalAmount:u64=6;
 //struct for articles
-public struct Article has store{
+public struct Article has store,drop{
     id:u64,
     owner:String,
     nameofarticle:String,
@@ -77,15 +74,6 @@ public struct ArticleDeleted has copy,drop{
 }
 public entry fun register_blogSite(name:String,ctx:&mut TxContext){
 
-     // assert!(ctx.caller == recipient, Error_Not_Librarian);
-        // let library_uid = object::new(ctx); 
-        // let librarian_cap_uid = object::new(ctx); 
-
-        // let library_id = object::uid_to_inner(&library_uid);
-        // let librarian_cap_id = object::uid_to_inner(&librarian_cap_uid);
-
-
-
     let userid=object::new(ctx);
     let user_id=object::uid_to_inner(&userid);
     let newblogpage=BlogSite {
@@ -112,7 +100,7 @@ public entry fun register_blogSite(name:String,ctx:&mut TxContext){
 
 
     //function to create an article
-public entry fun createarticle(user:&mut BlogSite,nameofarticle:String,title:String,description:String,ctx:&mut TxContext){
+public entry fun createarticle(user:&mut BlogSite,nameofarticle:String,title:String,description:String){
         
         let article_count=user.articles.length();
 
@@ -200,19 +188,12 @@ public entry fun delete_article( owner_cap: &BlogOwner,blog:&mut BlogSite,articl
       
 assert!(articleid <= blog.articles.length(),  EArticleNotAvailable);
 
-
-//get article
-let Article{id:_,owner:_,nameofarticle:_,title:_,description:_,likes:_,dislikes:_,comments:_}=&blog.articles[articleid];
-//let Article{id,article_id:_,owner:_,nameofarticle:_,title:_, description:_,likes:_,dislikes:_,amount_donated:_,comments:_}=art;
-    //let ArticleOwner {id,article_id}=owner;
     event::emit(ArticleDeleted{
         by:blog.name,
         articleid
     });
-   //  object::delete(art.id);
 
-   // object::delete(article_id);
-    
+    blog.articles.remove(articleid);
 }
 
 //function to get an article
@@ -255,5 +236,3 @@ public entry fun adddilikestoanarticle(blog:&mut BlogSite,by:address,article_id:
  }
 }
 
-//dislike an article
-//comment on an article
